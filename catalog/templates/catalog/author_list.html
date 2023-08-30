@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>LocalLib Authors</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Author List</h1>
+  {% if perms.catalog.can_affect_authors %}
+    <p style="text-muted">You can add a new author <a href="{% url 'author-create' %}">here</a></p>
+  {% endif %}
+
+  {% if author_list %}
+<p>This list has been rendered on {{ rendered_time }}</p>
+    <ul>
+      {% for author in author_list %}
+      <li>
+        <a href="{{ author.get_absolute_url }}">{{ author.last_name }}</a>
+        ({{author.first_name}})
+        {% if perms.catalog.can_affect_authors %}
+          <a href="{{ author.get_url_to_edition }}">Update</a>
+        {% endif %}
+        {% if perms.catalog.can_affect_authors %}
+          <a href="{{ author.get_url_to_deletion }}">Delete</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no authors yet.</p>
+  {% endif %}
+{% endblock %}

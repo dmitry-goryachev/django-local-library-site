@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>LocalLib Books</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Book List</h1>
+  {% if perms.catalog.can_affect_books %}
+    <p style="text-muted">You can add a new book <a href="{% url 'book-create' %}">here</a></p>
+  {% endif %}
+  {% if book_list %}
+    <ul>
+      {% for book in book_list %}
+      <li>
+        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+        ({{book.author}})
+        {% if perms.catalog.can_affect_books %}
+          <a href="{{ book.get_url_to_edition }}">Update</a>
+        {% endif %}
+        {% if perms.catalog.can_affect_books %}
+          <a href="{{ book.get_url_to_deletion }}">Delete</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+{% endblock %}
