@@ -111,12 +111,13 @@ class Command(BaseCommand):
                 20, 80
             )
         )
+        is_fake_death = random.choice([True, False])
 
         author = Author(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             date_of_birth=fake_birth.strftime('%Y-%m-%d'),
-            date_of_death=fake_death.strftime('%Y-%m-%d'),
+            date_of_death=fake_death.strftime('%Y-%m-%d') if is_fake_death else None,
             biography=fake.text()
         )
 
@@ -197,9 +198,8 @@ class Command(BaseCommand):
         :return:
         """
         # Clear data from tables
-        self.clear_data()
         if mode == MODE_CLEAR:
-            return
+            self.clear_data()
 
         # Creating the set number of objects to create
         for i_struct in kwargs.values():
